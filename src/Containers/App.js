@@ -1,18 +1,28 @@
 import React from 'react';
-import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
-import { Provider } from 'react-redux';
+import { connect } from 'react-redux';
+// import PropTypes from 'prop-types';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import Home from './Home';
-import store from '../redux/store';
+import Login from './Login';
 
 const App = () => (
-  <Provider store={store}>
-    <BrowserRouter>
-      <Switch>
-        <Route path="/" component={Home} exact />
-      </Switch>
-      <Redirect to="/" />
-    </BrowserRouter>
-  </Provider>
+  <BrowserRouter>
+    <Switch>
+      <Route path="/login" component={Login} exact />
+      <Route path="/" component={Home} exact />
+    </Switch>
+  </BrowserRouter>
 );
 
-export default App;
+const mapStateToProps = (state) => ({
+  session: state.session,
+});
+
+// eslint-disable-next-line no-unused-vars
+const mapDispatchToProps = (dispatch) => ({
+
+});
+
+const AppWrapper = connect(mapStateToProps, mapDispatchToProps)(App);
+
+export default AppWrapper;
