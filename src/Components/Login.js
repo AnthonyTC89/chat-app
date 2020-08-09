@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import * as chatActions from '../redux/actions/chatActions';
 import './Login.css';
 
 const defaultUser = {
@@ -28,8 +27,8 @@ const Login = ({ handleComponent, socket }) => {
     try {
       if (socket) {
         socket.send(JSON.stringify({
-          type: 'Hello',
-          data: { user },
+          type: 'LOGIN',
+          data: { ...user },
         }));
       }
       // const res = await axios.post('/api/users/login', user, { timeout: 5000 });
@@ -91,12 +90,6 @@ const mapStateToProps = (state) => ({
   ...state.chat,
 });
 
-const mapDispatchToProps = (dispatch) => ({
-  setupSocket: () => {
-    dispatch(chatActions.setupSocket());
-  },
-});
-
-const LoginWrapper = connect(mapStateToProps, mapDispatchToProps)(Login);
+const LoginWrapper = connect(mapStateToProps, null)(Login);
 
 export default LoginWrapper;
