@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
+import './Signup.css';
 
 const defaultUser = {
   username: '',
@@ -35,10 +36,10 @@ const Signup = ({ handleComponent }) => {
   };
 
   return (
-    <form className="form-signin" onSubmit={loading ? null : handleSubmit}>
+    <form className="form-signup" onSubmit={loading ? null : handleSubmit}>
       <h2 className="text-dark">Signup</h2>
       <input
-        className="form-control input-signin"
+        className="form-control input-signup"
         name="username"
         placeholder="username"
         value={user.username}
@@ -46,7 +47,7 @@ const Signup = ({ handleComponent }) => {
         required
       />
       <input
-        className="form-control input-signin"
+        className="form-control input-signup"
         name="email"
         placeholder="email"
         value={user.email}
@@ -54,7 +55,7 @@ const Signup = ({ handleComponent }) => {
         required
       />
       <input
-        className="form-control input-signin"
+        className="form-control input-signup"
         name="password"
         type="password"
         placeholder="password"
@@ -63,7 +64,7 @@ const Signup = ({ handleComponent }) => {
         required
       />
       <input
-        className="form-control input-signin"
+        className="form-control input-signup"
         name="confirmation"
         type="password"
         placeholder="password confirmation"

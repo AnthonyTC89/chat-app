@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import * as chatActions from '../redux/actions/chatActions';
+import './Login.css';
 
 const defaultUser = {
   email: '',
@@ -41,10 +42,10 @@ const Login = ({ handleComponent, socket }) => {
   };
 
   return (
-    <form className="form-signin" onSubmit={loading ? null : handleSubmit}>
+    <form className="form-login" onSubmit={loading ? null : handleSubmit}>
       <h2 className="text-dark">Login</h2>
       <input
-        className="form-control input-signin"
+        className="form-control input-login"
         name="email"
         placeholder="email"
         value={user.email}
@@ -52,7 +53,7 @@ const Login = ({ handleComponent, socket }) => {
         required
       />
       <input
-        className="form-control input-signin"
+        className="form-control input-login"
         name="password"
         type="password"
         placeholder="password"
