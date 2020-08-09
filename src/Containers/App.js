@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import * as chatActions from '../redux/actions/chatActions';
 import Home from './Home';
-import Login from './Login';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 class App extends React.Component {
   constructor(props) {
@@ -30,17 +30,11 @@ class App extends React.Component {
 
   render() {
     return (
-      <div>
-        <button type="button" onClick={this.handleClick}>
-          Send Message
-        </button>
-        <BrowserRouter>
-          <Switch>
-            <Route path="/login" component={Login} exact />
-            <Route path="/" component={Home} exact />
-          </Switch>
-        </BrowserRouter>
-      </div>
+      <BrowserRouter>
+        <Switch>
+          <Route path="/" component={Home} exact />
+        </Switch>
+      </BrowserRouter>
     );
   }
 }

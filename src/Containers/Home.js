@@ -1,16 +1,19 @@
 import React, { useState } from 'react';
-// import PropTypes from 'prop-types';
-// import { InfoHome } from '../Info.json';
-// import './Home.css';
+import Login from '../Components/Login';
+import Signup from '../Components/Signup';
 
 const Home = () => {
-  // eslint-disable-next-line no-unused-vars
-  const [showSignIn, setShowSignIn] = useState(true);
+  const [showLogin, setshowLogin] = useState(true);
+
+  const handleComponent = () => {
+    setshowLogin(!showLogin);
+  };
 
   return (
     <div className="container">
       <div className="row">
-        HOME
+        {showLogin ? <Login handleComponent={handleComponent} />
+          : <Signup handleComponent={handleComponent} />}
       </div>
     </div>
   );
