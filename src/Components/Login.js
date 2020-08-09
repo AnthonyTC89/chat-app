@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import * as chatActions from '../redux/actions/chatActions';
 
 const defaultUser = {
   email: '',
   password: '',
 };
 
-const Login = ({ handleComponent }) => {
+const Login = ({ handleComponent, socket }) => {
   const [user, setUser] = useState(defaultUser);
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState('');
@@ -23,6 +25,12 @@ const Login = ({ handleComponent }) => {
     setLoading(true);
     setMessage('');
     try {
+      if (socket) {
+        socket.send(JSON.stringify({
+          type: 'Hello',
+          data: { user },
+        }));
+      }
       // const res = await axios.post('/api/users/login', user, { timeout: 5000 });
       setLoading(false);
       setUser(defaultUser);
@@ -74,6 +82,20 @@ const Login = ({ handleComponent }) => {
 
 Login.propTypes = {
   handleComponent: PropTypes.func.isRequired,
+  socket: PropTypes.object.isRequired,
 };
 
-export default Login;
+const mapStateToProps = (state) => ({
+  ...state.session,
+  ...state.chat,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  setupSocket: () => {
+    dispatch(chatActions.setupSocket());
+  },
+});
+
+const LoginWrapper = connect(mapStateToProps, mapDispatchToProps)(Login);
+
+export default LoginWrapper;
