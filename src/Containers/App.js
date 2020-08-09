@@ -7,10 +7,10 @@ import Home from './Home';
 import Login from './Login';
 
 class App extends React.Component {
-  // constructor(props) {
-  //   super(props);
-  //   this.handleClick = this.handleClick.bind(this);
-  // }
+  constructor(props) {
+    super(props);
+    this.handleClick = this.handleClick.bind(this);
+  }
 
   componentDidMount() {
     const { setupSocket } = this.props;
@@ -19,23 +19,21 @@ class App extends React.Component {
 
   handleClick(e) {
     e.preventDefault();
-    // eslint-disable-next-line react/prop-types
     const { socket } = this.props;
     if (socket) {
-      // eslint-disable-next-line react/prop-types
-      socket.send({
+      socket.send(JSON.stringify({
         type: 'Hello',
         data: 'World',
-      });
+      }));
     }
   }
 
   render() {
     return (
       <div>
-        {/* <button type="button" onClick={this.handleClick}>
+        <button type="button" onClick={this.handleClick}>
           Send Message
-        </button> */}
+        </button>
         <BrowserRouter>
           <Switch>
             <Route path="/login" component={Login} exact />
@@ -49,6 +47,7 @@ class App extends React.Component {
 
 App.propTypes = {
   setupSocket: PropTypes.func.isRequired,
+  socket: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = (state) => ({
