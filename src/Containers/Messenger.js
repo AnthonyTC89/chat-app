@@ -22,7 +22,7 @@ const Messenger = ({ history }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setMessages([...messages, text]);
+    setMessages([...messages, { text, username: 'username', ownMessage: true }]);
     setText('');
   };
 
@@ -46,8 +46,9 @@ const Messenger = ({ history }) => {
       </div>
       <div className="row messages-list">
         {messages.map((msg) => (
-          <div className="col-12 message">
-            <p>{msg}</p>
+          <div className={msg.ownMessage ? 'col-12 own-message' : 'col-12 message'}>
+            {msg.ownMessage ? null : <small>{msg.username}</small>}
+            <p>{msg.text}</p>
           </div>
         ))}
       </div>

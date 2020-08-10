@@ -19,3 +19,11 @@
   display: flex;
   justify-content: center;
 }
+
+.own-message{
+  text-align: left;
+}
+
+.message{
+  text-align: right;
+}
