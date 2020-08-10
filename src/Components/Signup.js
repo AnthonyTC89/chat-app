@@ -10,7 +10,7 @@ const defaultUser = {
   confirmation: '',
 };
 
-const Signup = ({ handleComponent, socket }) => {
+const Signup = ({ handleComponent, history }) => {
   const [user, setUser] = useState(defaultUser);
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState('');
@@ -28,14 +28,9 @@ const Signup = ({ handleComponent, socket }) => {
     setMessage('');
     try {
       // const res = await axios.post('/api/users/login', user, { timeout: 5000 });
-      if (socket) {
-        socket.send(JSON.stringify({
-          type: 'SIGNUP',
-          data: { ...user },
-        }));
-      }
       setLoading(false);
       setUser(defaultUser);
+      history.push('/messenger');
     } catch (err) {
       setMessage('Error!');
       setLoading(false);
@@ -101,12 +96,11 @@ const Signup = ({ handleComponent, socket }) => {
 
 Signup.propTypes = {
   handleComponent: PropTypes.func.isRequired,
-  socket: PropTypes.object.isRequired,
+  history: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   ...state.session,
-  ...state.chat,
 });
 
 const SignupWrapper = connect(mapStateToProps, null)(Signup);

@@ -8,7 +8,7 @@ const defaultUser = {
   password: '',
 };
 
-const Login = ({ handleComponent, socket }) => {
+const Login = ({ handleComponent, history }) => {
   const [user, setUser] = useState(defaultUser);
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState('');
@@ -25,15 +25,10 @@ const Login = ({ handleComponent, socket }) => {
     setLoading(true);
     setMessage('');
     try {
-      if (socket) {
-        socket.send(JSON.stringify({
-          type: 'LOGIN',
-          data: { ...user },
-        }));
-      }
       // const res = await axios.post('/api/users/login', user, { timeout: 5000 });
       setLoading(false);
       setUser(defaultUser);
+      history.push('/messenger');
     } catch (err) {
       setMessage('Error!');
       setLoading(false);
@@ -49,7 +44,7 @@ const Login = ({ handleComponent, socket }) => {
         placeholder="email"
         value={user.email}
         onChange={handleChange}
-        required
+        // required
       />
       <input
         className="form-control input-login"
@@ -58,7 +53,7 @@ const Login = ({ handleComponent, socket }) => {
         placeholder="password"
         value={user.password}
         onChange={handleChange}
-        required
+        // required
       />
       <button className="btn btn-dark" type="submit" disabled={loading}>
         {loading
@@ -82,12 +77,11 @@ const Login = ({ handleComponent, socket }) => {
 
 Login.propTypes = {
   handleComponent: PropTypes.func.isRequired,
-  socket: PropTypes.object.isRequired,
+  history: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   ...state.session,
-  ...state.chat,
 });
 
 const LoginWrapper = connect(mapStateToProps, null)(Login);

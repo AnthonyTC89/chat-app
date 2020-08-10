@@ -1,40 +1,15 @@
-import React, { useEffect } from 'react';
-import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
+import React from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
-import * as chatActions from '../redux/actions/chatActions';
 import Home from './Home';
+import Messenger from './Messenger';
 
-const App = ({ setupSocket }) => {
-  useEffect(() => {
-    setupSocket();
-    // eslint-disable-next-line
-  }, []);
+const App = () => (
+  <BrowserRouter>
+    <Switch>
+      <Route path="/messenger" component={Messenger} />
+      <Route path="/" component={Home} />
+    </Switch>
+  </BrowserRouter>
+);
 
-  return (
-    <BrowserRouter>
-      <Switch>
-        <Route path="/" component={Home} exact />
-      </Switch>
-    </BrowserRouter>
-  );
-};
-
-App.propTypes = {
-  setupSocket: PropTypes.func.isRequired,
-};
-
-const mapStateToProps = (state) => ({
-  ...state.session,
-  ...state.chat,
-});
-
-const mapDispatchToProps = (dispatch) => ({
-  setupSocket: () => {
-    dispatch(chatActions.setupSocket());
-  },
-});
-
-const AppWrapper = connect(mapStateToProps, mapDispatchToProps)(App);
-
-export default AppWrapper;
+export default App;
