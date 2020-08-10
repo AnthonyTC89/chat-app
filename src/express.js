@@ -3,10 +3,7 @@ const express = require('express');
 const morgan = require('morgan');
 const SocketIO = require('socket.io');
 
-// const path = require('path');
-
-// eslint-disable-next-line
-// const { mongoose } = require('./database');
+const path = require('path');
 
 const app = express();
 
@@ -20,8 +17,8 @@ app.use(express.json());
 // Routes
 
 // Static Files
-// const index = path.join(__dirname, '../build');
-// app.use(express.static(index));
+const index = path.join(__dirname, '../build');
+app.use(express.static(index));
 
 // Stating Server
 const server = app.listen(app.get('port'), () => {

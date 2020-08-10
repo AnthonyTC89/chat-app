@@ -8,7 +8,7 @@ const Gravatar = ({ user }) => {
   const gravatar = `https://www.gravatar.com/avatar/${hash}`;
   const hrefGravatar = 'https://en.gravatar.com/site/login';
   return (
-    <a href={hrefGravatar} target="_blank" rel="noreferrer">
+    <a href={hrefGravatar} target="_blank" rel="noopener noreferrer">
       <img className="gravatar-img" alt={user.username} src={gravatar} />
     </a>
   );
