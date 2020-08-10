@@ -1,0 +1,25 @@
+.container-messenger {
+  background-color: white;
+  box-shadow: 1px 1px 10px 1px black;
+  margin-top: 5rem;
+  padding: 2rem;
+  background: white;
+}
+
+.header-messenger {
+  justify-content: space-around;
+}
+
+.messages-list {
+  text-align: center;
+  margin: 2rem
+}
+
+.input-row {
+  display: flex;
+  justify-content: center;
+}
+
+.message {
+
+}
