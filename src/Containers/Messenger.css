@@ -6,13 +6,26 @@
   background: white;
 }
 
+.header-user {
+  margin: auto 0;
+  width: 8rem;
+}
+
+.header-logout {
+  width: 8rem;
+  text-align: right;
+}
+
 .header-messenger {
   justify-content: space-around;
 }
 
 .messages-list {
   text-align: center;
-  margin: 2rem
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  margin: 2rem;
 }
 
 .input-row {
@@ -20,10 +33,30 @@
   justify-content: center;
 }
 
-.own-message{
+.own-message {
   text-align: left;
+  max-width: 30rem;
+  width: 100%;
+  background: lightblue;
+  padding-left: 2rem;
+  border-radius: 1rem;
+  margin-bottom: 0.2rem;
 }
 
-.message{
+.message {
   text-align: right;
+  max-width: 30rem;
+  width: 100%;
+  background: aliceblue;
+  padding-right: 2rem;
+  border-radius: 1rem;
+  margin-bottom: 0.2rem;
+}
+
+.message-from {
+  font-weight: bold;
+}
+
+.message-text {
+  font-size: larger;
 }

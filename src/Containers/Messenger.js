@@ -3,13 +3,18 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import io from 'socket.io-client';
 import updateChat from '../redux/actions/updateChat';
+import Gravatar from '../Components/Gravatar';
 import './Messenger.css';
 
 const Messenger = ({ history, chat, changeChat, session }) => {
-  const [socket, setSocket] = useState({});
+  const [socket, setSocket] = useState(null);
   const [text, setText] = useState('');
 
   const handleLogout = () => {
+    if (socket) {
+      socket.close();
+    }
+    changeChat(null);
     history.push('/');
   };
 
@@ -42,24 +47,29 @@ const Messenger = ({ history, chat, changeChat, session }) => {
   return (
     <div className="container container-messenger">
       <div className="row header-messenger">
-        <div>
+        <div className="header-user">
+          <Gravatar user={session.user} />
           <span>{session.user.username}</span>
         </div>
         <div>
           <h3>Public Chat</h3>
         </div>
-        <button type="button" className="btn btn-danger" onClick={handleLogout}>
-          Logout
-        </button>
+        <div className="header-logout">
+          <button type="button" className="btn btn-danger" onClick={handleLogout}>
+            Logout
+          </button>
+        </div>
       </div>
       <div className="row messages-list">
         {chat.map((message) => (
           <div
             className={message.from === session.user.username
-              ? 'col-12 own-message' : 'col-12 message'}
+              ? 'own-message' : 'message'}
           >
-            <small>{message.from}</small>
-            <p>{message.text}</p>
+            <div>
+              <small className="message-from">{message.from}</small>
+            </div>
+            <span className="message-text">{message.text}</span>
           </div>
         ))}
       </div>
@@ -73,7 +83,7 @@ const Messenger = ({ history, chat, changeChat, session }) => {
             onChange={handleChange}
             required
           />
-          <button type="submit" className="btn btn-primary">
+          <button type="submit" className="btn btn-success">
             Send
           </button>
         </form>

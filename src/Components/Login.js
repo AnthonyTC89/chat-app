@@ -35,12 +35,13 @@ const Login = ({ history, changeSession }) => {
         placeholder="username"
         value={user.username}
         onChange={handleChange}
+        minLength={4}
         required
       />
       <input
         className="form-control input-login"
         name="email"
-        placeholder="email"
+        placeholder="email (optional)"
         value={user.email}
         onChange={handleChange}
       />
