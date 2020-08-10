@@ -5,8 +5,7 @@ import io from 'socket.io-client';
 import updateChat from '../redux/actions/updateChat';
 import './Messenger.css';
 
-const Messenger = ({ history, chat, changeChat }) => {
-  // eslint-disable-next-line no-unused-vars
+const Messenger = ({ history, chat, changeChat, session }) => {
   const [socket, setSocket] = useState({});
   const [text, setText] = useState('');
 
@@ -21,18 +20,21 @@ const Messenger = ({ history, chat, changeChat }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // const body = { text, from: 'me' };
-    socket.emit('message', text);
-    changeChat(text);
+    const message = { text, from: session.user.username };
     setText('');
+    socket.emit('message', message);
+    changeChat(message);
   };
 
   useEffect(() => {
+    if (!session.isLoggedIn) {
+      handleLogout();
+      return;
+    }
     const newSocket = io('/');
     setSocket(newSocket);
-    newSocket.on('message', (body) => {
-      console.log('body: ', body);
-      changeChat(body);
+    newSocket.on('message', (message) => {
+      changeChat(message);
     });
     // eslint-disable-next-line
   }, []);
@@ -41,7 +43,7 @@ const Messenger = ({ history, chat, changeChat }) => {
     <div className="container container-messenger">
       <div className="row header-messenger">
         <div>
-          <span>Username</span>
+          <span>{session.user.username}</span>
         </div>
         <div>
           <h3>Public Chat</h3>
@@ -51,11 +53,13 @@ const Messenger = ({ history, chat, changeChat }) => {
         </button>
       </div>
       <div className="row messages-list">
-        {console.log('chat: ', chat)}
-        {chat.map((msg) => (
-          <div className={msg ? 'col-12 own-message' : 'col-12 message'}>
-            {msg ? null : <small>{msg.username}</small>}
-            <p>{msg}</p>
+        {chat.map((message) => (
+          <div
+            className={message.from === session.user.username
+              ? 'col-12 own-message' : 'col-12 message'}
+          >
+            <small>{message.from}</small>
+            <p>{message.text}</p>
           </div>
         ))}
       </div>
@@ -82,10 +86,12 @@ Messenger.propTypes = {
   history: PropTypes.object.isRequired,
   chat: PropTypes.array.isRequired,
   changeChat: PropTypes.func.isRequired,
+  session: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   chat: state.chat,
+  session: state.session,
 });
 
 const mapDispatchToProps = (dispatch) => ({

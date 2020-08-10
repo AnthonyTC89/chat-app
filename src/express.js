@@ -32,8 +32,7 @@ const server = app.listen(app.get('port'), () => {
 const io = SocketIO(server);
 
 io.on('connection', (socket) => {
-  console.log('new conection: ', socket.id);
-  socket.on('message', (text) => {
-    socket.broadcast.emit('message', text);
+  socket.on('message', (message) => {
+    socket.broadcast.emit('message', { text: message.text, from: message.from });
   });
 });

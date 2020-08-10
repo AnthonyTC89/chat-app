@@ -1,17 +1,16 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import updateSession from '../redux/actions/updateSession';
 import './Login.css';
 
 const defaultUser = {
+  username: '',
   email: '',
-  password: '',
 };
 
-const Login = ({ handleComponent, history }) => {
+const Login = ({ history, changeSession }) => {
   const [user, setUser] = useState(defaultUser);
-  const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState('');
 
   const handleChange = (e) => {
     e.persist();
@@ -22,68 +21,49 @@ const Login = ({ handleComponent, history }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true);
-    setMessage('');
-    try {
-      // const res = await axios.post('/api/users/login', user, { timeout: 5000 });
-      setLoading(false);
-      setUser(defaultUser);
-      history.push('/messenger');
-    } catch (err) {
-      setMessage('Error!');
-      setLoading(false);
-    }
+    changeSession(user);
+    setUser(defaultUser);
+    history.push('/messenger');
   };
 
   return (
-    <form className="form-login" onSubmit={loading ? null : handleSubmit}>
+    <form className="form-login" onSubmit={handleSubmit}>
       <h2 className="text-dark">Login</h2>
+      <input
+        className="form-control input-login"
+        name="username"
+        placeholder="username"
+        value={user.username}
+        onChange={handleChange}
+        required
+      />
       <input
         className="form-control input-login"
         name="email"
         placeholder="email"
         value={user.email}
         onChange={handleChange}
-        // required
       />
-      <input
-        className="form-control input-login"
-        name="password"
-        type="password"
-        placeholder="password"
-        value={user.password}
-        onChange={handleChange}
-        // required
-      />
-      <button className="btn btn-dark" type="submit" disabled={loading}>
-        {loading
-          ? <span className="spinner-border spinner-border-sm mr-2" role="status" aria-hidden="true" />
-          : null}
-        {loading ? 'Wait...' : 'Login'}
+      <button className="btn btn-dark" type="submit">
+        Login
       </button>
-      <small className="text-danger">{message}</small>
-      <div className="form-group">
-        <button
-          className="btn text-dark btn-link"
-          type="button"
-          onClick={handleComponent}
-        >
-          Don&apos;t have and account, Sign up!
-        </button>
-      </div>
     </form>
   );
 };
 
 Login.propTypes = {
-  handleComponent: PropTypes.func.isRequired,
   history: PropTypes.object.isRequired,
+  changeSession: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   ...state.session,
 });
 
-const LoginWrapper = connect(mapStateToProps, null)(Login);
+const mapDispatchToProps = (dispatch) => ({
+  changeSession: (user) => dispatch(updateSession(user)),
+});
+
+const LoginWrapper = connect(mapStateToProps, mapDispatchToProps)(Login);
 
 export default LoginWrapper;
