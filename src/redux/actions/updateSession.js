@@ -1,4 +1,4 @@
 export const type = 'UPDATE_SESSION';
-const updateSession = (token) => ({ type, token });
+const updateSession = (user) => ({ type, user });
 
 export default updateSession;
