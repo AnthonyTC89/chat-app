@@ -31,6 +31,9 @@ const server = app.listen(app.get('port'), () => {
 // Websockets
 const io = SocketIO(server);
 
-io.on('connection', () => {
-  console.log('new conection');
+io.on('connection', (socket) => {
+  console.log('new conection: ', socket.id);
+  socket.on('message', (text) => {
+    socket.broadcast.emit('message', text);
+  });
 });

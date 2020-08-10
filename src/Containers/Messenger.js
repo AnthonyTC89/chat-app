@@ -2,13 +2,12 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import io from 'socket.io-client';
+import updateChat from '../redux/actions/updateChat';
 import './Messenger.css';
 
-const Messenger = ({ history }) => {
+const Messenger = ({ history, chat, changeChat }) => {
   // eslint-disable-next-line no-unused-vars
   const [socket, setSocket] = useState({});
-  // eslint-disable-next-line no-unused-vars
-  const [messages, setMessages] = useState([]);
   const [text, setText] = useState('');
 
   const handleLogout = () => {
@@ -22,12 +21,19 @@ const Messenger = ({ history }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setMessages([...messages, { text, username: 'username', ownMessage: true }]);
+    // const body = { text, from: 'me' };
+    socket.emit('message', text);
+    changeChat(text);
     setText('');
   };
 
   useEffect(() => {
-    setSocket(io('/'));
+    const newSocket = io('/');
+    setSocket(newSocket);
+    newSocket.on('message', (body) => {
+      console.log('body: ', body);
+      changeChat(body);
+    });
     // eslint-disable-next-line
   }, []);
 
@@ -45,10 +51,11 @@ const Messenger = ({ history }) => {
         </button>
       </div>
       <div className="row messages-list">
-        {messages.map((msg) => (
-          <div className={msg.ownMessage ? 'col-12 own-message' : 'col-12 message'}>
-            {msg.ownMessage ? null : <small>{msg.username}</small>}
-            <p>{msg.text}</p>
+        {console.log('chat: ', chat)}
+        {chat.map((msg) => (
+          <div className={msg ? 'col-12 own-message' : 'col-12 message'}>
+            {msg ? null : <small>{msg.username}</small>}
+            <p>{msg}</p>
           </div>
         ))}
       </div>
@@ -73,12 +80,18 @@ const Messenger = ({ history }) => {
 
 Messenger.propTypes = {
   history: PropTypes.object.isRequired,
+  chat: PropTypes.array.isRequired,
+  changeChat: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
-  ...state.session,
+  chat: state.chat,
 });
 
-const MessengerWrapper = connect(mapStateToProps, null)(Messenger);
+const mapDispatchToProps = (dispatch) => ({
+  changeChat: (message) => dispatch(updateChat(message)),
+});
+
+const MessengerWrapper = connect(mapStateToProps, mapDispatchToProps)(Messenger);
 
 export default MessengerWrapper;
